@@ -13,10 +13,29 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('member.blogs.index', [
-            'Post' => Post::latest()->paginate(3)
+        $user = Auth::user();
+        // $search = $request->search;
+    
+        // return view('member.blogs.index', [
+        //     'Post' => Post::where('user_id', $user->id)
+        //         ->when($search, function ($query) use ($search) {
+        //             $query->where('title', 'like', "%{$search}%")
+        //                 ->orWhere('content', 'like', "%{$search}%");
+        //         })
+        //         ->orderBy('id', 'desc')
+        //         ->paginate(3)
+        //         ->withQueryString()
+        // ]);
+        $key = $request->search;
+        if ($key != null) {
+            $posts = Post::where('title', 'like', "%$key%")->get();
+        } else {
+            $posts = Post::all();
+        }
+        return view('member.blogs.index',[
+            'posts' => $posts, 
         ]);
     }
 

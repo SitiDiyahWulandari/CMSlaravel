@@ -6,7 +6,7 @@
     </x-slot>
     <x-slot name="headerRight">
        <form action="{{ route('member.blogs.index') }}" method="get">
-          <x-text-input id='search' type='text' class="p-1 m-0 md:w-72 w-80 nt-3 md:nt-0" value="{{ request('search') }}" placeholder='masukkan kata kunci...'/>
+          <x-text-input id='search' type='text' class="p-1 m-0 md:w-72 w-80 nt-3 md:nt-0" value="{{ request('search') }}" placeholder='masukkan kata kunci...' name='search'/>
           <x-secondary-button class="p-1" type='submit'>cari</x-secondary-button>
 
        </form>
@@ -28,10 +28,10 @@
                         </thead>
                         <tbody>
 
-                        @foreach ($Post as $item)
+                        @foreach ($posts as $item)
 
                         <tr>
-                                <td class="border px-6 py-4 text-center">{{ $Post->firstItem() + $loop->index }}</td>
+                                <td class="border px-6 py-4 text-center">{{ $loop->iteration }}</td>
                                 <td class="border px-6 py-4">
                                     {{ $item->title }}
                                     <div class="block lg:hidden text-sm text-gray-500">
@@ -58,7 +58,7 @@
                     </table>
                 </div>
                 <div class="p-4">
-                    {{ $Post->links() }}
+                   
                 </div>
             </div>
         </div>
