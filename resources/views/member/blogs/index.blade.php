@@ -4,6 +4,13 @@
             Pengaturan Blog <a href="{{ route('member.blogs.create') }}" class="bg-blue-400 p-2 rounded-md text-white text-sm"  >Tambah Tulisan</a>
         </h2>
     </x-slot>
+    <x-slot name="headerRight">
+       <form action="{{ route('member.blogs.index') }}" method="get">
+          <x-text-input id='search' type='text' class="p-1 m-0 md:w-72 w-80 nt-3 md:nt-0" value="{{ request('search') }}" placeholder='masukkan kata kunci...'/>
+          <x-secondary-button class="p-1" type='submit'>cari</x-secondary-button>
+
+       </form>
+    </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
