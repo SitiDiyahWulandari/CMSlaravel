@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-
 class BlogController extends Controller
 {
     /**
@@ -17,7 +16,7 @@ class BlogController extends Controller
     public function index()
     {
         return view('member.blogs.index', [
-            'Post' => Post::latest()->paginate(2)
+            'Post' => Post::latest()->paginate(3)
         ]);
     }
 
@@ -34,7 +33,37 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:10240'
+        ], [
+            'title.required' => 'Judul wajib diisi',
+            'content.required' => 'Konten wajib diisi',
+            'thumbnail.image' => 'Hanya gambar yang diperbolehkan',
+            'thumbnail.mimes' => 'Ekstensi yang diperbolehkan hanya JPEG, JPG, dan PNG',
+            'thumbnail.max' => 'Ukuran maksimum untuk thumbnail adalah 10MB',
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $image_name = time() . "_" . $image->getClientOriginalName();
+            $destination_path = public_path(getenv('CUSTOM_TUMBNAIL_LOCATION'));
+            $image->move($destination_path, $image_name);
+        }
+
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'status' => $request->status,
+            'thumbnail' => isset($image_name) ? $image_name : null,
+            'slug' => $this->generateSlug($request->title),
+            'user_id'=> Auth::user()->id
+        ];
+
+        Post::create($data);
+        return redirect()->route('member.blogs.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -42,7 +71,7 @@ class BlogController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        // Implement this method if needed
     }
 
     /**
@@ -50,8 +79,7 @@ class BlogController extends Controller
      */
     public function edit(Post $post)
     {
-        $data = $post;
-        return view('member.blogs.edit', compact('data'));
+        return view('member.blogs.edit', ['data' => $post]);
     }
 
     /**
@@ -71,7 +99,7 @@ class BlogController extends Controller
             'thumbnail.max' => 'Ukuran maksimum untuk thumbnail adalah 10MB',
         ]);
 
-        if($request->hasFile('thumbnail')) {
+        if ($request->hasFile('thumbnail')) {
             if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_TUMBNAIL_LOCATION')) . "/" . $post->thumbnail)) {
                 unlink(public_path(getenv('CUSTOM_TUMBNAIL_LOCATION')) . "/" . $post->thumbnail);
             }
@@ -80,7 +108,6 @@ class BlogController extends Controller
             $image_name = time() . "_" . $image->getClientOriginalName();
             $destination_path = public_path(getenv('CUSTOM_TUMBNAIL_LOCATION'));
             $image->move($destination_path, $image_name);
-
         }
 
         $data = [
@@ -101,17 +128,20 @@ class BlogController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+       //
     }
 
-    private function generateSlug($title, $id) {
+    /**
+     * Generate a unique slug for the post.
+     */
+    private function generateSlug($title, $id = null){
         $slug = Str::slug($title);
-        $count = Post::where('slug',$slug)->when($id, function ($query, $id) {
+        $count = Post::where('slug', $slug)->when($id, function ($query, $id) {
             return $query->where('id', '!=', $id);
         })->count();
 
-        if ($count > 0) {
-            $slug = $slug . "-" . ($count + 1);
+        if($count > 0){
+            $slug = $slug."-".($count + 1);
         }
         return $slug;
     }
