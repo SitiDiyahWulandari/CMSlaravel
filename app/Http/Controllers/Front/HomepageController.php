@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 
-class HomepageController extends Controller 
+class HomepageController extends Controller
 {
     public function index() {
-        $data = Post::where('status', 'publish')->orderBy('id', 'desc')->paginate(5);
+        $data = Post::where('status', 'publish')->orderBy('id', 'desc')->paginate(2);
         return view('components.front.home-page', compact('data'));
     }
 }
