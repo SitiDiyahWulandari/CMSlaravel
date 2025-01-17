@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Front\HomepageController;
-use App\Http\Controllers\Member\BlogController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Member\BlogController;
+use App\Http\Controllers\Front\HomepageController;
+use App\Http\Controllers\Front\BlogDetailController;
 
 Route::get('/', [HomepageController::class, 'index']);
 
@@ -29,3 +30,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/{slug}',[BlogDetailController::class,'detail'])->name('blog-detail');
