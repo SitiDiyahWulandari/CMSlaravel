@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>{{ getenv('APP_NAME') }}</title>
+        <title>@isset($pageTitle){{ $pageTitle." | " }} @endisset{{ getenv('APP_NAME') }}</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -31,6 +31,11 @@
         @endisset
                             @isset($pageSubheading)
                             <span class="subheading">{{ $pageSubheading }}</span>
+                            @endisset
+
+                            @isset($pageUser)
+                               <span class="meta">Posted By {{ $pageUser }}</span> on {{ $pageUser }}
+
                             @endisset
 
                         </div>
