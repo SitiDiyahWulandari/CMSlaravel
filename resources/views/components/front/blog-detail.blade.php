@@ -22,13 +22,24 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     {!! $data->content !!}
                     <!-- Pager-->
-                    <div class="d-flex justify-content-between mb-4">
-                        <div>
+                    <div class="d-flex justify-content-between mb-4 mt-4">
 
-                        </div>
-                        <div>
 
+                        <div>
+                            @if ($pagination['next'])
+                            <a href="{{ route('blog-detail',['slug'=>$pagination['next']->slug]) }}">&larr;{{ $pagination['next']->title }}</a>
+                            @else
+                            <span></span>
+                            @endif
                         </div>
+
+                        <div>
+                            @if ($pagination['prev'])
+                            <a href="{{ route('blog-detail',['slug'=>$pagination['prev']->slug]) }}">&larr; {{ $pagination['prev']->title }} &rarr;</a>
+                            @else
+                            <span></span>
+                            @endif
+                          </div>
                     </div>
                 </div>
             </div>
