@@ -27,7 +27,7 @@
 
                         <div>
                             @if ($pagination['next'])
-                            <a href="{{ route('blog-detail',['slug'=>$pagination['next']->slug]) }}">&larr;{{ $pagination['next']->title }}</a>
+                            <a href="{{ route('blog-detail',['slug'=>$pagination['next']->slug]) }}">&larr; vb {{ $pagination['next']->title }}</a>
                             @else
                             <span></span>
                             @endif

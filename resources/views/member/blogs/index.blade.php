@@ -1,15 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Pengaturan Blog <a href="{{ route('member.blogs.create') }}" class="bg-blue-400 p-2 rounded-md text-white text-sm"  >Tambah Tulisan</a>
+            Pengaturan Blog <a href="{{ route('member.blogs.create') }}"
+            class="bg-blue-400 p-2 rounded-md text-white text-sm">Tambah Tulisan</a>
         </h2>
     </x-slot>
     <x-slot name="headerRight">
-       <form action="{{ route('member.blogs.index') }}" method="get">
-          <x-text-input id='search' type='text' class="p-1 m-0 md:w-72 w-80 nt-3 md:nt-0" value="{{ request('search') }}" placeholder='masukkan kata kunci...' name='search'/>
-          <x-secondary-button class="p-1" type='submit'>cari</x-secondary-button>
-
-       </form>
+        <form action="{{ route('member.blogs.index') }}" method="get">
+            <x-text-input id='search' name='search' type='text' class="p-1 m-0 md:w-72 w-80 mt-3 md:mt-0"
+             value="{{ request('search') }}" placeholder='masukan kata kunci...'/>
+             <x-secondary-button class="p-1" type='submit'>cari</x-secondary-button>
+        </form>
     </x-slot>
 
     <div class="py-12">
@@ -27,29 +28,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach ($Post as $item)
 
-                        @foreach ($posts as $item)
-
-                        <tr>
-                                <td class="border px-6 py-4 text-center">{{ $loop->iteration }}</td>
+                            <tr>
+                                <td class="border px-6 py-4 text-center">{{ $Post->firstItem() + $loop->index }}</td>
                                 <td class="border px-6 py-4">
                                     {{ $item->title }}
                                     <div class="block lg:hidden text-sm text-gray-500">
                                         {{ $item->status }} | {{ $item->created_at->isoFormat('dddd, D MMMM Y') }}
                                     </div>
+                                </td>
                                 <td class="border px-6 py-4 text-center text-gray-500 text-sm hidden lg:table-cell">{{ $item->created_at->isoFormat('dddd, D MMMM Y') }}</td>
                                 <td class="border px-6 py-4 text-center text-sm hidden lg:table-cell"> {{ $item->status }}</td>
                                 <td class="border px-6 py-4 text-center">
-                                    <a target='blank' href='{{ route("member.blogs.edit",["post"=>$item->id])  }}' class="text-blue-600 hover:text-blue-400 px-2">edit</a>
-                                    <a href="{{ route('blog-detail',['slug'=>$value->slug]') }}" class="text-blue-600 hover:text-blue-400 px-2">lihat</a>
-                                    <form class="inline" onsubmit="return confirm('Yakin akan menghapus data ini?')" method="post" action="{{ route('member.blogs.destroy', ['post'=>$item->id]) }}">
-                                        @csrf
-                                        @method('delete')
+                                    <a href='{{ route("member.blogs.edit",["post"=>$item->id]) }}' class="text-blue-600 hover:text-blue-400 px-2">edit</a>
+                                    <a target='blank' href="{{ route('blog-detail', ['slug'=>$item->slug]) }}" class="text-blue-600 hover:text-blue-400 px-2">lihat</a>
+                                    <form class="inline" onsubmit="return confirm('Yakin akan menghapus data ini?')"
+                                    method="post" action="{{ route('member.blogs.destroy',
+                                    ['post'=>$item->id]) }}">
+                                    @csrf
+                                    @method('delete')
                                     <button type=' submit' class='text-red-600 hover:text-red-400 px-2'>
                                         hapus
                                     </button>
                                     </form>
-
                                 </td>
                             </tr>
                             @endforeach
@@ -58,7 +60,7 @@
                     </table>
                 </div>
                 <div class="p-4">
-
+                    {{ $Post->links() }}
                 </div>
             </div>
         </div>
