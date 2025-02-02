@@ -17,9 +17,9 @@
     <body class="font-sans text-gray-900 antialiased bg-pink-100">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
             <!-- Form Container -->
-            <div class="w-full sm:max-w-md mt-6 px-8 py-10 bg-pink-50 shadow-lg rounded-3xl overflow-hidden sm:rounded-lg border-2 border-pink-200">
+            <div class="w-full sm:max-w-lg mt-6 px-10 py-12 shadow-lg rounded-3xl overflow-hidden sm:rounded-lg border-2 border-pink-200" style="padding-right: 1rem; padding-left: 1rem;">
                 <div class="form-title text-center mb-8">
-                    <h2 class="text-3xl font-bold text-pink-600">
+                    <h2 class="text-3xl font-bold">
                         @if(Route::currentRouteName() == 'login')
                             {{ __('Login') }}
                         @elseif(Route::currentRouteName() == 'register')
